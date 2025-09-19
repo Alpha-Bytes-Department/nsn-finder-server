@@ -41,4 +41,6 @@ router.patch(
   }
 );
 
+router.get('/my-items', auth(USER_ROLES.USER), ItemController.getMyItems);
+
 export const ItemRoutes = router;
