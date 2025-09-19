@@ -104,8 +104,57 @@ const getMyItems = async (userId: any, query: Record<string, unknown>) => {
   return data;
 };
 
+const getItemsForAdmin = async (query: Record<string, unknown>) => {
+  const { page, limit, searchTerm, ...filterData } = query;
+
+  const anyConditions: any[] = [];
+
+  if (searchTerm) {
+    anyConditions.push({
+      $or: [
+        { name: { $regex: searchTerm, $options: 'i' } },
+        { status: { $regex: searchTerm, $options: 'i' } },
+      ],
+    });
+  }
+
+  if (Object.keys(filterData).length > 0) {
+    const filterConditions = Object.entries(filterData).map(
+      ([field, value]) => ({ [field]: value })
+    );
+    anyConditions.push({ $and: filterConditions });
+  }
+
+  const whereConditions =
+    anyConditions.length > 0 ? { $and: anyConditions } : {};
+
+  // Pagination setup
+  const pages = parseInt(page as string) || 1;
+  const size = parseInt(limit as string) || 10;
+  const skip = (pages - 1) * size;
+
+  const result = await Item.find(whereConditions)
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(size)
+    .lean();
+
+  const total = await Item.countDocuments(whereConditions);
+
+  const data: any = {
+    result,
+    meta: {
+      page: pages,
+      limit: size,
+      total,
+    },
+  };
+  return data;
+};
+
 export const ItemService = {
   createItem,
   updateItem,
   getMyItems,
+  getItemsForAdmin,
 };

@@ -43,4 +43,10 @@ router.patch(
 
 router.get('/my-items', auth(USER_ROLES.USER), ItemController.getMyItems);
 
+router.get(
+  '/get-items-for-admin',
+  auth(USER_ROLES.ADMIN),
+  ItemController.getItemsForAdmin
+);
+
 export const ItemRoutes = router;

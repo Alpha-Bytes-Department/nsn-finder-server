@@ -58,8 +58,20 @@ const getMyItems = catchAsync(async (req, res) => {
   });
 });
 
+const getItemsForAdmin = catchAsync(async (req, res) => {
+  const result = await ItemService.getItemsForAdmin(req.query);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: StatusCodes.CREATED,
+    message: 'Item retrived successfully',
+    data: result,
+  });
+});
+
 export const ItemController = {
   createItem,
   updateItem,
   getMyItems,
+  getItemsForAdmin,
 };
