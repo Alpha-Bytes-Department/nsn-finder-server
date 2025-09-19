@@ -152,9 +152,66 @@ const getItemsForAdmin = async (query: Record<string, unknown>) => {
   return data;
 };
 
+const getItemsEveryone = async (query: Record<string, unknown>) => {
+  const { page, limit, searchTerm, sortBy, sortOrder, ...filterData } = query;
+
+  const anyConditions: any[] = [];
+
+  // Search by name
+  if (searchTerm) {
+    anyConditions.push({
+      $or: [{ name: { $regex: searchTerm, $options: 'i' } }],
+    });
+  }
+
+  // Filtering
+  if (Object.keys(filterData).length > 0) {
+    const filterConditions = Object.entries(filterData).map(
+      ([field, value]) => ({ [field]: value })
+    );
+    anyConditions.push({ $and: filterConditions });
+  }
+
+  const whereConditions =
+    anyConditions.length > 0 ? { $and: anyConditions } : {};
+
+  // Pagination setup
+  const pages = parseInt(page as string) || 1;
+  const size = parseInt(limit as string) || 10;
+  const skip = (pages - 1) * size;
+
+  // ✅ Handle dynamic sorting
+  let sortCondition: Record<string, 1 | -1> = { createdAt: -1 }; // default
+
+  if (sortBy) {
+    sortCondition = {
+      [sortBy as string]: sortOrder === 'asc' ? 1 : -1,
+    };
+  }
+
+  const result = await Item.find(whereConditions)
+    .sort(sortCondition)
+    .skip(skip)
+    .limit(size)
+    .lean();
+
+  const total = await Item.countDocuments(whereConditions);
+
+  const data: any = {
+    result,
+    meta: {
+      page: pages,
+      limit: size,
+      total,
+    },
+  };
+  return data;
+};
+
 export const ItemService = {
   createItem,
   updateItem,
   getMyItems,
   getItemsForAdmin,
+  getItemsEveryone,
 };

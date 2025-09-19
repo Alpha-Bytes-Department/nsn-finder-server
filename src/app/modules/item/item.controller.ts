@@ -52,7 +52,7 @@ const getMyItems = catchAsync(async (req, res) => {
 
   sendResponse(res, {
     success: true,
-    statusCode: StatusCodes.CREATED,
+    statusCode: StatusCodes.OK,
     message: 'Item retrived successfully',
     data: result,
   });
@@ -63,7 +63,18 @@ const getItemsForAdmin = catchAsync(async (req, res) => {
 
   sendResponse(res, {
     success: true,
-    statusCode: StatusCodes.CREATED,
+    statusCode: StatusCodes.OK,
+    message: 'Item retrived successfully',
+    data: result,
+  });
+});
+
+const getItemsEveryone = catchAsync(async (req, res) => {
+  const result = await ItemService.getItemsEveryone(req.query);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: StatusCodes.OK,
     message: 'Item retrived successfully',
     data: result,
   });
@@ -74,4 +85,5 @@ export const ItemController = {
   updateItem,
   getMyItems,
   getItemsForAdmin,
+  getItemsEveryone,
 };
