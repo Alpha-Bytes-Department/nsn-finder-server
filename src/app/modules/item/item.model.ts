@@ -12,6 +12,11 @@ const itemSchema = new Schema<IItem>(
     manul: { type: Number, required: true },
     image: { type: [String], default: [] },
     userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    status: {
+      type: String,
+      enum: ['pending', 'approved', 'rejected'],
+      default: 'pending',
+    },
   },
   { timestamps: true }
 );

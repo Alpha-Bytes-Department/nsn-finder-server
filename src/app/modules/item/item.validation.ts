@@ -14,3 +14,18 @@ export const createItemSchema = z.object({
   // String identifiers
   elc: z.string().min(1, { message: 'ELC is required' }),
 });
+
+export const updateItemSchema = z.object({
+  // Basic info
+  name: z.string().optional(),
+
+  // Numeric identifiers
+  niin: z.number().optional(),
+  model: z.number().optional(),
+  lin: z.number().optional(),
+  nsn: z.number().optional(),
+  manul: z.number().optional(),
+
+  // String identifiers
+  elc: z.string().optional(),
+});

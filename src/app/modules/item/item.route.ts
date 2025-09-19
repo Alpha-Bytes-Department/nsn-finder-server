@@ -2,7 +2,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import { USER_ROLES } from '../../../enums/user';
 import auth from '../../middlewares/auth';
 import fileUploadHandler from '../../middlewares/fileUploadHandler';
-import { createItemSchema } from './item.validation';
+import { createItemSchema, updateItemSchema } from './item.validation';
 import { ItemController } from './item.controller';
 
 const router = express.Router();
@@ -16,6 +16,28 @@ router.post(
       req.body = createItemSchema.parse(JSON.parse(req.body.data));
     }
     return ItemController.createItem(req, res, next);
+  }
+);
+
+router.patch(
+  '/update/:id',
+  auth(USER_ROLES.USER),
+  fileUploadHandler,
+  (req: Request, res: Response, next: NextFunction) => {
+    const { imagesToDelete, data } = req.body;
+
+    if (!data && imagesToDelete) {
+      req.body = { imagesToDelete };
+      return ItemController.updateItem(req, res, next);
+    }
+
+    if (data) {
+      const parsedData = updateItemSchema.parse(JSON.parse(data));
+
+      req.body = { ...parsedData, imagesToDelete };
+    }
+
+    return ItemController.updateItem(req, res, next);
   }
 );
 

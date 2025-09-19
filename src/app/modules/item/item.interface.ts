@@ -10,6 +10,7 @@ export type IItem = {
   manul: number;
   image: string[];
   userId: Types.ObjectId;
+  status: 'pending' | 'approved' | 'rejected';
 };
 
 export type UpdateItemPayload = Partial<IItem> & {

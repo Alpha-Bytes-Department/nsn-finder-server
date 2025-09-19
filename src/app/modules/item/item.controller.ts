@@ -27,6 +27,27 @@ const createItem = catchAsync(async (req, res) => {
   });
 });
 
+const updateItem = catchAsync(async (req, res) => {
+  const value = {
+    ...req.body,
+  };
+
+  let image = getFilePathMultiple(req.files, 'image', 'image');
+
+  if (image && image.length > 0) {
+    value.image = image;
+  }
+  const result = await ItemService.updateItem(req.params.id, value);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: StatusCodes.CREATED,
+    message: 'Item updated successfully',
+    data: result,
+  });
+});
+
 export const ItemController = {
   createItem,
+  updateItem,
 };
