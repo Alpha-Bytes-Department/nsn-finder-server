@@ -208,10 +208,32 @@ const getItemsEveryone = async (query: Record<string, unknown>) => {
   return data;
 };
 
+const updateStatus = async (
+  id: string,
+  payload: Partial<UpdateItemPayload>
+) => {
+  const isExistItem = await Item.findById(id);
+  if (!isExistItem) {
+    throw new ApiError(StatusCodes.NOT_FOUND, 'Item not found');
+  }
+
+  const result = await Item.findByIdAndUpdate(
+    id,
+    { status: payload.status },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  return result;
+};
+
 export const ItemService = {
   createItem,
   updateItem,
   getMyItems,
   getItemsForAdmin,
   getItemsEveryone,
+  updateStatus,
 };

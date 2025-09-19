@@ -55,4 +55,10 @@ router.get(
   ItemController.getItemsForAdmin
 );
 
+router.patch(
+  '/update-status/:id',
+  auth(USER_ROLES.ADMIN),
+  ItemController.updateStatus
+);
+
 export const ItemRoutes = router;

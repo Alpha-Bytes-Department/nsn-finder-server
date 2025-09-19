@@ -80,10 +80,22 @@ const getItemsEveryone = catchAsync(async (req, res) => {
   });
 });
 
+const updateStatus = catchAsync(async (req, res) => {
+  const result = await ItemService.updateStatus(req.params.id, req.body);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: StatusCodes.OK,
+    message: 'Item updated successfully',
+    data: result,
+  });
+});
+
 export const ItemController = {
   createItem,
   updateItem,
   getMyItems,
   getItemsForAdmin,
   getItemsEveryone,
+  updateStatus,
 };
