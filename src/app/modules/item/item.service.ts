@@ -155,7 +155,7 @@ const getItemsForAdmin = async (query: Record<string, unknown>) => {
 const getItemsEveryone = async (query: Record<string, unknown>) => {
   const { page, limit, searchTerm, sortBy, sortOrder, ...filterData } = query;
 
-  const anyConditions: any[] = [];
+  const anyConditions: any[] = [{ status: 'approved' }];
 
   // Search by name
   if (searchTerm) {
