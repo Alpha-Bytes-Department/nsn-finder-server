@@ -3,6 +3,7 @@ import ApiError from '../../../errors/ApiError';
 import { IItem, UpdateItemPayload } from './item.interface';
 import { Item } from './item.model';
 import unlinkFile from '../../../shared/unlinkFile';
+import { sendEmail } from '../../../helpers/sendMail';
 
 const createItem = async (payload: IItem) => {
   const isExist = await Item.findOne({
@@ -212,21 +213,51 @@ const updateStatus = async (
   id: string,
   payload: Partial<UpdateItemPayload>
 ) => {
-  const isExistItem = await Item.findById(id);
-  if (!isExistItem) {
+  // Update and populate user in one query
+  const updatedItem = await Item.findByIdAndUpdate(
+    id,
+    { status: payload.status },
+    { new: true, runValidators: true }
+  ).populate('userId');
+
+  if (!updatedItem) {
     throw new ApiError(StatusCodes.NOT_FOUND, 'Item not found');
   }
 
-  const result = await Item.findByIdAndUpdate(
-    id,
-    { status: payload.status },
-    {
-      new: true,
-      runValidators: true,
-    }
-  );
+  const user: any = updatedItem.userId;
 
-  return result;
+  // Prepare email data
+  let subject = '';
+  let body = '';
+
+  if (updatedItem.status === 'approved') {
+    subject = 'Your Item Has Been Approved';
+    body = `
+      Dear ${user?.name || 'User'},
+      
+      Congratulations, and thank you for your contribution!
+    `;
+  }
+
+  if (updatedItem.status === 'rejected') {
+    subject = 'Your Item Has Been Rejected';
+    body = `
+      Dear ${user?.name || 'User'},
+      
+      Unfortunately, your item submission has been rejected. 
+      If you have any questions, feel free to contact our support team.
+    `;
+  }
+
+  // Fire-and-forget (non-blocking)
+  if (subject && body) {
+    sendEmail(user?.email, subject, body).catch(err => {
+      console.error('Email sending failed:', err);
+    });
+  }
+
+  // Return immediately
+  return updatedItem;
 };
 
 export const ItemService = {
