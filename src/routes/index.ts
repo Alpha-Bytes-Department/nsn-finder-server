@@ -3,6 +3,7 @@ import { AuthRoutes } from '../app/modules/auth/auth.route';
 import { UserRoutes } from '../app/modules/user/user.route';
 import { NotificationRoutes } from '../app/modules/Notification/Notification.route';
 import { ItemRoutes } from '../app/modules/item/item.route';
+import { BountiesRoutes } from '../app/modules/bounties/bounties.route';
 
 const router = express.Router();
 
@@ -11,6 +12,7 @@ const apiRoutes = [
   { path: '/auth', route: AuthRoutes },
   { path: '/notification', route: NotificationRoutes },
   { path: '/item', route: ItemRoutes },
+  { path: '/bounty', route: BountiesRoutes },
 ];
 
 apiRoutes.forEach(route => router.use(route.path, route.route));

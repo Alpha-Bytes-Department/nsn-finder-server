@@ -5,22 +5,36 @@ import { Item } from './item.model';
 import unlinkFile from '../../../shared/unlinkFile';
 import { sendEmail } from '../../../helpers/sendMail';
 import { Bounties } from '../bounties/bounties.model';
+import { User } from '../user/user.model';
 
 const createItem = async (payload: IItem) => {
-  const isExist = await Item.findOne({
+  // Check if user exists and is subscribed
+  const user = await User.findById(payload.userId).select('subscribed').lean();
+  if (!user) {
+    throw new ApiError(StatusCodes.NOT_FOUND, 'User not found');
+  }
+  if (!user.subscribed) {
+    throw new ApiError(
+      StatusCodes.BAD_REQUEST,
+      'You need to subscribe first to add an item'
+    );
+  }
+
+  // Check if item with the same name already exists for this user
+  const existingItem = await Item.findOne({
     userId: payload.userId,
     name: payload.name,
-  });
+  }).lean();
 
-  if (isExist) {
+  if (existingItem) {
     throw new ApiError(
       StatusCodes.BAD_REQUEST,
       `Item with name ${payload.name} already exists`
     );
   }
 
-  const item = await Item.create(payload);
-  return item;
+  // Create new item
+  return await Item.create(payload);
 };
 
 const updateItem = async (id: string, payload: Partial<UpdateItemPayload>) => {
