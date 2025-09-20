@@ -182,7 +182,7 @@ const getItemsEveryone = async (query: Record<string, unknown>) => {
   const skip = (pages - 1) * size;
 
   // ✅ Handle dynamic sorting
-  let sortCondition: Record<string, 1 | -1> = { createdAt: -1 }; // default
+  let sortCondition: Record<string, 1 | -1> = { createdAt: -1 };
 
   if (sortBy) {
     sortCondition = {
