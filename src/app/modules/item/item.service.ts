@@ -4,6 +4,7 @@ import { IItem, UpdateItemPayload } from './item.interface';
 import { Item } from './item.model';
 import unlinkFile from '../../../shared/unlinkFile';
 import { sendEmail } from '../../../helpers/sendMail';
+import { Bounties } from '../bounties/bounties.model';
 
 const createItem = async (payload: IItem) => {
   const isExist = await Item.findOne({
@@ -237,6 +238,13 @@ const updateStatus = async (
       
       Congratulations, and thank you for your contribution!
     `;
+
+    // Increment or create new bounties document
+    await Bounties.findOneAndUpdate(
+      { userId: user?._id }, // filter by userId
+      { $inc: { value: 2 } }, // increment value
+      { new: true, upsert: true, setDefaultsOnInsert: true }
+    );
   }
 
   if (updatedItem.status === 'rejected') {
