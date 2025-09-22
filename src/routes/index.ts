@@ -5,6 +5,7 @@ import { NotificationRoutes } from '../app/modules/Notification/Notification.rou
 import { ItemRoutes } from '../app/modules/item/item.route';
 import { BountiesRoutes } from '../app/modules/bounties/bounties.route';
 import { SpendBountiesRoutes } from '../app/modules/spendBounties/spendBounties.route';
+import { ListRoutes } from '../app/modules/list/list.route';
 
 const router = express.Router();
 
@@ -15,6 +16,7 @@ const apiRoutes = [
   { path: '/item', route: ItemRoutes },
   { path: '/bounty', route: BountiesRoutes },
   { path: '/spend-bounty', route: SpendBountiesRoutes },
+  { path: '/list', route: ListRoutes },
 ];
 
 apiRoutes.forEach(route => router.use(route.path, route.route));
