@@ -17,7 +17,14 @@ const getMyBounties = catchAsync(async (req, res) => {
 });
 
 const spendBounty = catchAsync(async (req, res) => {
-  const result = await BountiesService.spendBounty(req.params.id, req.body);
+  const userId: string = req.user.id;
+
+  const value = {
+    ...req.body,
+    userId,
+  };
+
+  const result = await BountiesService.spendBounty(req.params.id, value);
 
   sendResponse(res, {
     success: true,
