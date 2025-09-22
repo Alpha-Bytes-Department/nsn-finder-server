@@ -16,6 +16,18 @@ const getMyBounties = catchAsync(async (req, res) => {
   });
 });
 
+const spendBounty = catchAsync(async (req, res) => {
+  const result = await BountiesService.spendBounty(req.params.id, req.body);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: StatusCodes.OK,
+    message: 'Bounties spend successfully',
+    data: result,
+  });
+});
+
 export const BountiesController = {
   getMyBounties,
+  spendBounty,
 };

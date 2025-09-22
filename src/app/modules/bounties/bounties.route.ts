@@ -11,4 +11,10 @@ router.get(
   BountiesController.getMyBounties
 );
 
+router.post(
+  '/spend-bounty/:id',
+  auth(USER_ROLES.USER),
+  BountiesController.spendBounty
+);
+
 export const BountiesRoutes = router;
