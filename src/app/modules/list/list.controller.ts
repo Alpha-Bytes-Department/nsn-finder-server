@@ -21,6 +21,20 @@ const createList = catchAsync(async (req, res) => {
   });
 });
 
+const getMyLists = catchAsync(async (req, res) => {
+  const userId = req.user.id;
+
+  const result = await ListService.getMyLists(userId, req.query);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.CREATED,
+    success: true,
+    message: 'List retrived successfully',
+    data: result,
+  });
+});
+
 export const ListController = {
   createList,
+  getMyLists,
 };

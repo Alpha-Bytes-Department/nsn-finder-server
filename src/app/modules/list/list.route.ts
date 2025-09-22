@@ -7,4 +7,6 @@ const router = express.Router();
 
 router.post('/create-list', auth(USER_ROLES.USER), ListController.createList);
 
+router.get('/my-lists', auth(USER_ROLES.USER), ListController.getMyLists);
+
 export const ListRoutes = router;
