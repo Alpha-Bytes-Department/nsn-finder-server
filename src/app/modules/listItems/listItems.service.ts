@@ -8,17 +8,17 @@ import { Item } from '../item/item.model';
 const createListItem = async (
   listItem: Partial<IListItem>
 ): Promise<IListItem> => {
-  const [list, item] = await Promise.all([
+  const [list, items] = await Promise.all([
     List.findById(listItem.listId),
-    Item.findById(listItem.itemId),
+    Item.find({ _id: { $in: listItem.itemId } }), // handle multiple
   ]);
 
   if (!list) {
     throw new ApiError(StatusCodes.NOT_FOUND, 'List not found');
   }
 
-  if (!item) {
-    throw new ApiError(StatusCodes.NOT_FOUND, 'Item not found');
+  if (!items || items.length !== listItem.itemId?.length) {
+    throw new ApiError(StatusCodes.NOT_FOUND, 'One or more items not found');
   }
 
   return await ListItem.create(listItem);

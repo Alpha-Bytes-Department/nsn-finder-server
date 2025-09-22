@@ -3,7 +3,7 @@ import { IListItem } from './listItems.interface';
 
 const listItemsSchema = new Schema<IListItem>(
   {
-    itemId: { type: Schema.Types.ObjectId, ref: 'Item', required: true },
+    itemId: [{ type: Schema.Types.ObjectId, ref: 'Item', required: true }],
     listId: { type: Schema.Types.ObjectId, ref: 'List', required: true },
     userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   },
