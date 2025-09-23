@@ -7,4 +7,5 @@ export type IPayment = {
   endDate: Date;
   package: string;
   platForm: string;
+  status: string;
 };

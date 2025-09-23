@@ -13,8 +13,12 @@ const paymentSchema = new Schema<IPayment>(
     endDate: { type: Date, required: true },
     package: { type: String, required: true },
     platForm: { type: String, required: true },
+    status: {
+      type: String,
+      enum: ['success', 'failed'],
+    },
   },
   { timestamps: true }
 );
 
-export const PaymentModel = model<IPayment>('Payment', paymentSchema);
+export const Payment = model<IPayment>('Payment', paymentSchema);
