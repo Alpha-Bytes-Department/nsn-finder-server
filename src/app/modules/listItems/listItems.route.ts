@@ -17,4 +17,10 @@ router.get(
   ListItemsController.getAllListItems
 );
 
+router.patch(
+  '/remove-item/:id',
+  auth(USER_ROLES.USER),
+  ListItemsController.removeListItem
+);
+
 export const ListItemsRoutes = router;

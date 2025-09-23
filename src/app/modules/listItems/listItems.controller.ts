@@ -30,7 +30,21 @@ const getAllListItems = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: StatusCodes.CREATED,
     success: true,
-    message: 'List created successfully',
+    message: 'List retrived successfully',
+    data: result,
+  });
+});
+
+const removeListItem = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const { itemIds } = req.body;
+
+  const result = await ListItemsService.removeListItem(id, itemIds);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Item(s) removed from list successfully',
     data: result,
   });
 });
@@ -38,4 +52,5 @@ const getAllListItems = catchAsync(async (req, res) => {
 export const ListItemsController = {
   createListItem,
   getAllListItems,
+  removeListItem,
 };

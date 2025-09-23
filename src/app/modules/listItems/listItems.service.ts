@@ -54,7 +54,25 @@ const getAllListItems = async (
   return data;
 };
 
+const removeListItem = async (
+  listItemId: string,
+  itemIdsToRemove: string[] // one or many
+): Promise<IListItem | null> => {
+  const updatedListItem = await ListItem.findByIdAndUpdate(
+    listItemId,
+    {
+      $pull: {
+        itemId: { $in: itemIdsToRemove }, // remove any matching values from array
+      },
+    },
+    { new: true } // return updated doc
+  );
+
+  return updatedListItem;
+};
+
 export const ListItemsService = {
   createListItem,
   getAllListItems,
+  removeListItem,
 };
