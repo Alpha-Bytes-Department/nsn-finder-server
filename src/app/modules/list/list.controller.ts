@@ -45,8 +45,20 @@ const removeList = catchAsync(async (req, res) => {
   });
 });
 
+const updateList = catchAsync(async (req, res) => {
+  const result = await ListService.updateList(req.params.id, req.body);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.CREATED,
+    success: true,
+    message: 'List updated successfully',
+    data: result,
+  });
+});
+
 export const ListController = {
   createList,
   getMyLists,
   removeList,
+  updateList,
 };

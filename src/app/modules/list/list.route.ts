@@ -15,4 +15,10 @@ router.delete(
   ListController.removeList
 );
 
+router.patch(
+  '/update-list/:id',
+  auth(USER_ROLES.USER),
+  ListController.updateList
+);
+
 export const ListRoutes = router;

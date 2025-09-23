@@ -57,8 +57,22 @@ const removeList = async (id: string): Promise<IList | null> => {
   return isExistList;
 };
 
+const updateList = async (
+  id: string,
+  payload: Partial<IList>
+): Promise<IList | null> => {
+  const isExistList = await List.findById(id);
+  if (!isExistList) {
+    throw new ApiError(StatusCodes.NOT_FOUND, 'List not found');
+  }
+
+  const updatedList = await List.findByIdAndUpdate(id, payload, { new: true });
+  return updatedList;
+};
+
 export const ListService = {
   createList,
   getMyLists,
   removeList,
+  updateList,
 };
