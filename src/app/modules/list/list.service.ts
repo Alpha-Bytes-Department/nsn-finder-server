@@ -3,6 +3,7 @@ import ApiError from '../../../errors/ApiError';
 import { IList } from './list.interface';
 import { List } from './list.model';
 import { ListItem } from '../listItems/listItems.model';
+import { sendEmail } from '../../../helpers/sendMail';
 
 const createList = async (payload: IList) => {
   const isExistList = await List.findOne({
@@ -86,6 +87,17 @@ const updateList = async (
   const updatedList = await List.findByIdAndUpdate(id, updateData, {
     new: true,
   });
+
+  if (payload.addEmails?.length) {
+    payload.addEmails.forEach(
+      email =>
+        sendEmail(
+          email,
+          'You have been added to a list',
+          `Please log in to view the list: ${isExistList.name}`
+        ).catch(console.error) // catch errors to avoid unhandled promise rejection
+    );
+  }
 
   return updatedList;
 };

@@ -16,104 +16,77 @@ export async function sendEmail(email: string, subject: string, text: string) {
     });
 
     const info = await transporter.sendMail({
-      from: `"NSN" ${config.email.from}`, // Sender address
-      to: email, // Recipient's email
-      subject: `${subject}`, // Subject line
-      text: text, // Plain text version
+      from: `"NSN" ${config.email.from}`,
+      to: email,
+      subject: subject,
+      text: text,
       html: `
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Promotional Email</title>
-          <style>
-            /* Reset styles */
-            body, html {
-              margin: 0;
-              padding: 0;
-              font-family: Arial, sans-serif;
-            }
-    
-            /* Container styles */
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>${subject}</title>
+        <style>
+          body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+          }
+          .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background-color: #ffffff;
+            padding: 25px 30px;
+            border: 1px solid #dddddd;
+            border-radius: 8px;
+          }
+          .header {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: left; /* Left aligned */
+          }
+          .content {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #555555;
+            text-align: left; /* Left aligned */
+          }
+          .footer {
+            font-size: 12px;
+            color: #999999;
+            margin-top: 30px;
+            text-align: left; /* Left aligned */
+          }
+          @media (max-width: 600px) {
             .container {
-              max-width: 600px;
-              margin: 20px auto;
               padding: 20px;
-              border: 1px solid #ccc;
-              border-radius: 10px;
-              background-color: #fff;
-              box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             }
-    
-            /* Header styles */
             .header {
-              background-color: #caccd1; /* New blue background */
-              padding: 20px;
-              border-radius: 10px 10px 0 0;
-              color: #000000;
-              text-align: center;
-            }
-            .header h1 {
-              margin: 0;
-            }
-    
-            /* Content styles */
-            .content {
-              padding: 20px;
-              text-align: left;
               font-size: 16px;
-              line-height: 1.6;
-              color: #333;
             }
-    
-            /* Footer styles */
-            .footer {
-              background-color: #caccd1; /* New green background */
-              padding: 15px;
-              border-radius: 0 0 10px 10px;
-              text-align: center;
-              color: #000000;
-              font-size: 12px;
+            .content {
+              font-size: 15px;
             }
-    
-            /* Button styles */
-            .btn {
-              display: inline-block;
-              padding: 10px 20px;
-              margin-top: 10px;
-              background-color: #FF6600;
-              color: #fff;
-              text-decoration: none;
-              border-radius: 5px;
-              font-weight: bold;
-            }
-    
-            /* Responsive styles */
-            @media (max-width: 600px) {
-              .container {
-                padding: 10px;
-              }
-              .content {
-                font-size: 14px;
-              }
-            }
-          </style>
-        </head>
-        <body>
-          <div class="container">
-            <div class="header">
-              <h1>${subject}</h1>
-            </div>
-            <div class="content">
-              <p>${text}</p>
-            </div>
-            <div class="footer">
-              <p>&copy; ${new Date().getFullYear()} NSN. All rights reserved.</p>
-            </div>
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">${subject}</div>
+          <div class="content">
+            <p>${text}</p>
           </div>
-        </body>
-        </html>
+          <div class="footer">
+            &copy; ${new Date().getFullYear()} NSN. All rights reserved.
+          </div>
+        </div>
+      </body>
+      </html>
       `,
     });
 
