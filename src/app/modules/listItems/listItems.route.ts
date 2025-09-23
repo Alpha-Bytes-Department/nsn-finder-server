@@ -11,4 +11,10 @@ router.post(
   ListItemsController.createListItem
 );
 
+router.get(
+  '/get-items/:listId',
+  auth(USER_ROLES.USER),
+  ListItemsController.getAllListItems
+);
+
 export const ListItemsRoutes = router;

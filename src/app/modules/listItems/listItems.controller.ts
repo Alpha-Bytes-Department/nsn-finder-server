@@ -21,6 +21,21 @@ const createListItem = catchAsync(async (req, res) => {
   });
 });
 
+const getAllListItems = catchAsync(async (req, res) => {
+  const result = await ListItemsService.getAllListItems(
+    req.params.listId,
+    req.query
+  );
+
+  sendResponse(res, {
+    statusCode: StatusCodes.CREATED,
+    success: true,
+    message: 'List created successfully',
+    data: result,
+  });
+});
+
 export const ListItemsController = {
   createListItem,
+  getAllListItems,
 };

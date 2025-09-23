@@ -24,6 +24,37 @@ const createListItem = async (
   return await ListItem.create(listItem);
 };
 
+const getAllListItems = async (
+  listId: string,
+  query: Record<string, unknown>
+) => {
+  const { page, limit } = query;
+
+  const pages = parseInt(page as string) || 1;
+  const size = parseInt(limit as string) || 10;
+  const skip = (pages - 1) * size;
+
+  const result = await ListItem.find({ listId })
+    // .select('-userId -listId')
+    .populate('itemId')
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(size)
+    .lean();
+  const total = await ListItem.countDocuments({ listId });
+
+  const data: any = {
+    result,
+    meta: {
+      page: pages,
+      limit: size,
+      total,
+    },
+  };
+  return data;
+};
+
 export const ListItemsService = {
   createListItem,
+  getAllListItems,
 };
