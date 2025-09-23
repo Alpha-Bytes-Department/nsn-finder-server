@@ -21,4 +21,10 @@ router.patch(
   ListController.updateList
 );
 
+router.get(
+  '/get-details/:id',
+  auth(USER_ROLES.USER),
+  ListController.getDetails
+);
+
 export const ListRoutes = router;

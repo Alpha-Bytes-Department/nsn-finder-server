@@ -56,9 +56,21 @@ const updateList = catchAsync(async (req, res) => {
   });
 });
 
+const getDetails = catchAsync(async (req, res) => {
+  const result = await ListService.getDetails(req.params.id);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.CREATED,
+    success: true,
+    message: 'List retrived successfully',
+    data: result,
+  });
+});
+
 export const ListController = {
   createList,
   getMyLists,
   removeList,
   updateList,
+  getDetails,
 };

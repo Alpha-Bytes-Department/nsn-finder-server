@@ -90,9 +90,18 @@ const updateList = async (
   return updatedList;
 };
 
+const getDetails = async (id: string) => {
+  const isExistList = await List.findById(id);
+  if (!isExistList) {
+    throw new ApiError(StatusCodes.NOT_FOUND, 'List not found');
+  }
+  return isExistList;
+};
+
 export const ListService = {
   createList,
   getMyLists,
   removeList,
   updateList,
+  getDetails,
 };
