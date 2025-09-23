@@ -13,6 +13,11 @@ const listSchema = new Schema<IList>(
       required: true,
     },
     email: [{ type: String }],
+    status: {
+      type: String,
+      enum: ['shared', 'pending'],
+      default: 'pending',
+    },
   },
   { timestamps: true }
 );

@@ -4,4 +4,5 @@ export type IList = {
   userId: Types.ObjectId;
   name: string;
   email?: string[];
+  status: string;
 };

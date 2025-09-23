@@ -25,14 +25,20 @@ const getMyLists = async (userId: string, query: Record<string, unknown>) => {
   const size = parseInt(limit as string) || 10;
   const skip = (pages - 1) * size;
 
-  const result = await List.find({ userId })
+  const filters: any = { userId };
+  if (query.status) {
+    filters.status = query.status;
+  }
+
+  const result = await List.find(filters)
     .sort({ createdAt: -1 })
     .skip(skip)
     .limit(size)
     .lean();
-  const total = await List.countDocuments({ userId });
 
-  const data: any = {
+  const total = await List.countDocuments(filters);
+
+  return {
     result,
     meta: {
       page: pages,
@@ -40,7 +46,6 @@ const getMyLists = async (userId: string, query: Record<string, unknown>) => {
       total,
     },
   };
-  return data;
 };
 
 const removeList = async (id: string): Promise<IList | null> => {
@@ -84,10 +89,14 @@ const updateList = async (
   }
 
   // Update other fields (like name, etc.)
-  const updatedList = await List.findByIdAndUpdate(id, updateData, {
-    new: true,
-  });
-
+  const updatedList = await List.findByIdAndUpdate(
+    id,
+    {
+      ...updateData,
+      status: 'shared',
+    },
+    { new: true }
+  );
   if (payload.addEmails?.length) {
     payload.addEmails.forEach(
       email =>
