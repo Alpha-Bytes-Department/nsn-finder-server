@@ -59,14 +59,34 @@ const removeList = async (id: string): Promise<IList | null> => {
 
 const updateList = async (
   id: string,
-  payload: Partial<IList>
+  payload: Partial<IList & { addEmails?: string[]; removeEmails?: string[] }>
 ): Promise<IList | null> => {
   const isExistList = await List.findById(id);
   if (!isExistList) {
     throw new ApiError(StatusCodes.NOT_FOUND, 'List not found');
   }
 
-  const updatedList = await List.findByIdAndUpdate(id, payload, { new: true });
+  const updateData: any = { ...payload };
+
+  // Add multiple or single emails
+  if (payload.addEmails && payload.addEmails.length > 0) {
+    await List.findByIdAndUpdate(id, {
+      $addToSet: { email: { $each: payload.addEmails } }, // avoids duplicates
+    });
+  }
+
+  // Remove multiple or single emails
+  if (payload.removeEmails && payload.removeEmails.length > 0) {
+    await List.findByIdAndUpdate(id, {
+      $pull: { email: { $in: payload.removeEmails } },
+    });
+  }
+
+  // Update other fields (like name, etc.)
+  const updatedList = await List.findByIdAndUpdate(id, updateData, {
+    new: true,
+  });
+
   return updatedList;
 };
 
