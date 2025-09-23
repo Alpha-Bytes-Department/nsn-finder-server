@@ -2,6 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import ApiError from '../../../errors/ApiError';
 import { IList } from './list.interface';
 import { List } from './list.model';
+import { ListItem } from '../listItems/listItems.model';
 
 const createList = async (payload: IList) => {
   const isExistList = await List.findOne({
@@ -41,7 +42,23 @@ const getMyLists = async (userId: string, query: Record<string, unknown>) => {
   return data;
 };
 
+const removeList = async (id: string): Promise<IList | null> => {
+  const isExistList = await List.findById(id);
+  if (!isExistList) {
+    throw new ApiError(StatusCodes.NOT_FOUND, 'List not found');
+  }
+
+  // Delete related items and the list in parallel
+  await Promise.all([
+    ListItem.deleteMany({ listId: id }),
+    List.findByIdAndDelete(id),
+  ]);
+
+  return isExistList;
+};
+
 export const ListService = {
   createList,
   getMyLists,
+  removeList,
 };
