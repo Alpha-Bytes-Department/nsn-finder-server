@@ -8,6 +8,7 @@ import { SpendBountiesRoutes } from '../app/modules/spendBounties/spendBounties.
 import { ListRoutes } from '../app/modules/list/list.route';
 import { ListItemsRoutes } from '../app/modules/listItems/listItems.route';
 import { PaymentRoutes } from '../app/modules/payment/payment.route';
+import { DashboardRoutes } from '../app/modules/dashboard/dashboard.route';
 
 const router = express.Router();
 
@@ -21,6 +22,7 @@ const apiRoutes = [
   { path: '/list', route: ListRoutes },
   { path: '/list-item', route: ListItemsRoutes },
   { path: '/payment', route: PaymentRoutes },
+  { path: '/dashboard', route: DashboardRoutes },
 ];
 
 apiRoutes.forEach(route => router.use(route.path, route.route));

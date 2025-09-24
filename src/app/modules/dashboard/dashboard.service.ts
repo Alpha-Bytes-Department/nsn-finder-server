@@ -6,7 +6,11 @@ const getStatistics = async () => {
     User.countDocuments({}),
     User.countDocuments({ subscribed: false }),
     User.countDocuments({ subscribed: true }),
-    Payment.countDocuments({ status: 'success' }),
+    Payment.aggregate([
+      { $match: { status: 'success' } },
+      { $group: { _id: null, total: { $sum: '$price' } } },
+      { $project: { _id: 0, total: 1 } },
+    ]),
   ]);
 
   return { totalUsers, freeUsers, paidUsers, ammount };
