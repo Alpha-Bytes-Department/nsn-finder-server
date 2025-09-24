@@ -21,6 +21,18 @@ const createPayment = catchAsync(async (req, res) => {
   });
 });
 
+const unsubscribeUser = catchAsync(async (req, res) => {
+  const result = await PaymentService.unsubscribeUser();
+
+  sendResponse(res, {
+    statusCode: StatusCodes.CREATED,
+    success: true,
+    message: 'Payment unsubscribed successfully',
+    data: result,
+  });
+});
+
 export const PaymentController = {
   createPayment,
+  unsubscribeUser,
 };

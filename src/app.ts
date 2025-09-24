@@ -4,6 +4,8 @@ import { StatusCodes } from 'http-status-codes';
 import globalErrorHandler from './app/middlewares/globalErrorHandler';
 import router from './routes';
 import { Morgan } from './shared/morgen';
+import cron from 'node-cron';
+import { PaymentService } from './app/modules/payment/payment.service';
 
 const app = express();
 
@@ -24,6 +26,10 @@ app.use(express.urlencoded({ extended: true }));
 
 //file retrieve
 app.use(express.static('uploads'));
+
+cron.schedule('*/2 * * * *', async () => {
+  await Promise.all([PaymentService.unsubscribeUser()]);
+});
 
 //router
 app.use('/api/v1', router);

@@ -11,4 +11,6 @@ router.post(
   PaymentController.createPayment
 );
 
+router.post('/unsubscribe-user', PaymentController.unsubscribeUser);
+
 export const PaymentRoutes = router;
