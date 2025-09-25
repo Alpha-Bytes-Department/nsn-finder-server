@@ -43,8 +43,20 @@ const getTotalPayment = catchAsync(async (req, res) => {
   });
 });
 
+const getAllPayment = catchAsync(async (req, res) => {
+  const result = await PaymentService.getAllPayment(req.query);
+
+  sendResponse(res, {
+    statusCode: StatusCodes.CREATED,
+    success: true,
+    message: 'Payment retrived successfully',
+    data: result,
+  });
+});
+
 export const PaymentController = {
   createPayment,
   unsubscribeUser,
   getTotalPayment,
+  getAllPayment,
 };
