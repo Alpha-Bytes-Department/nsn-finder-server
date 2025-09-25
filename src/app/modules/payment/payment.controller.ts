@@ -25,7 +25,7 @@ const unsubscribeUser = catchAsync(async (req, res) => {
   const result = await PaymentService.unsubscribeUser();
 
   sendResponse(res, {
-    statusCode: StatusCodes.CREATED,
+    statusCode: StatusCodes.OK,
     success: true,
     message: 'Payment unsubscribed successfully',
     data: result,
@@ -36,7 +36,7 @@ const getTotalPayment = catchAsync(async (req, res) => {
   const result = await PaymentService.getTotalPayment();
 
   sendResponse(res, {
-    statusCode: StatusCodes.CREATED,
+    statusCode: StatusCodes.OK,
     success: true,
     message: 'Payment retrived successfully',
     data: result,
@@ -47,7 +47,7 @@ const getAllPayment = catchAsync(async (req, res) => {
   const result = await PaymentService.getAllPayment(req.query);
 
   sendResponse(res, {
-    statusCode: StatusCodes.CREATED,
+    statusCode: StatusCodes.OK,
     success: true,
     message: 'Payment retrived successfully',
     data: result,
