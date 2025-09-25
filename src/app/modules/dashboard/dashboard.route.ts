@@ -11,4 +11,10 @@ router.get(
   DashboardController.getStatistics
 );
 
+router.get(
+  '/get-earning-chart-data',
+  auth(USER_ROLES.ADMIN),
+  DashboardController.getEarningChartData
+);
+
 export const DashboardRoutes = router;
