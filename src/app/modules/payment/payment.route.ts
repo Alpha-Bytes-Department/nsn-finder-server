@@ -15,13 +15,13 @@ router.post('/unsubscribe-user', PaymentController.unsubscribeUser);
 
 router.get(
   '/get-total-payment',
-  auth(USER_ROLES.ADMIN),
+  auth(USER_ROLES.ADMIN, USER_ROLES.MODERATOR),
   PaymentController.getTotalPayment
 );
 
 router.get(
   '/get-all-payment',
-  auth(USER_ROLES.ADMIN),
+  auth(USER_ROLES.ADMIN, USER_ROLES.MODERATOR),
   PaymentController.getAllPayment
 );
 

@@ -12,7 +12,7 @@ router.post('/create-user', UserController.createUser);
 router.patch(
   '/update-profile',
   fileUploadHandler,
-  auth(USER_ROLES.ADMIN, USER_ROLES.USER),
+  auth(USER_ROLES.ADMIN, USER_ROLES.USER, USER_ROLES.MODERATOR),
   (req: Request, res: Response, next: NextFunction) => {
     if (req.body.data) {
       req.body = UserValidation.updateZodSchema.parse(
@@ -25,11 +25,15 @@ router.patch(
 
 router.get(
   '/user',
-  auth(USER_ROLES.ADMIN, USER_ROLES.USER),
+  auth(USER_ROLES.ADMIN, USER_ROLES.USER, USER_ROLES.MODERATOR),
   UserController.getUserProfile
 );
 
-router.get('/get-all-users', auth(USER_ROLES.ADMIN), UserController.getAllUser);
+router.get(
+  '/get-all-users',
+  auth(USER_ROLES.ADMIN, USER_ROLES.MODERATOR),
+  UserController.getAllUser
+);
 
 router.get(
   '/get-all-users/:id',

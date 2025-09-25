@@ -9,6 +9,7 @@ import { ListRoutes } from '../app/modules/list/list.route';
 import { ListItemsRoutes } from '../app/modules/listItems/listItems.route';
 import { PaymentRoutes } from '../app/modules/payment/payment.route';
 import { DashboardRoutes } from '../app/modules/dashboard/dashboard.route';
+import { ModeratorRoutes } from '../app/modules/moderator/moderator.route';
 
 const router = express.Router();
 
@@ -23,6 +24,7 @@ const apiRoutes = [
   { path: '/list-item', route: ListItemsRoutes },
   { path: '/payment', route: PaymentRoutes },
   { path: '/dashboard', route: DashboardRoutes },
+  { path: '/moderator', route: ModeratorRoutes },
 ];
 
 apiRoutes.forEach(route => router.use(route.path, route.route));

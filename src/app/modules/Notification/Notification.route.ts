@@ -19,19 +19,19 @@ router.patch(
 
 router.get(
   '/admin',
-  auth(USER_ROLES.ADMIN),
+  auth(USER_ROLES.ADMIN, USER_ROLES.MODERATOR),
   NotificationController.adminNotificationFromDB
 );
 
 router.patch(
   '/admin',
-  auth(USER_ROLES.ADMIN),
+  auth(USER_ROLES.ADMIN, USER_ROLES.MODERATOR),
   NotificationController.adminReadNotification
 );
 
 router.delete(
   '/delete-all',
-  auth(USER_ROLES.ADMIN),
+  auth(USER_ROLES.ADMIN, USER_ROLES.MODERATOR),
   NotificationController.deleteAllNotifications
 );
 

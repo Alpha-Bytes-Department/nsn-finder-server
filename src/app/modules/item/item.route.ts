@@ -45,19 +45,19 @@ router.get('/my-items', auth(USER_ROLES.USER), ItemController.getMyItems);
 
 router.get(
   '/everyone-items',
-  auth(USER_ROLES.USER, USER_ROLES.ADMIN),
+  auth(USER_ROLES.USER, USER_ROLES.ADMIN, USER_ROLES.MODERATOR),
   ItemController.getItemsEveryone
 );
 
 router.get(
   '/get-items-for-admin',
-  auth(USER_ROLES.ADMIN),
+  auth(USER_ROLES.ADMIN, USER_ROLES.MODERATOR),
   ItemController.getItemsForAdmin
 );
 
 router.patch(
   '/update-status/:id',
-  auth(USER_ROLES.ADMIN),
+  auth(USER_ROLES.ADMIN, USER_ROLES.MODERATOR),
   ItemController.updateStatus
 );
 

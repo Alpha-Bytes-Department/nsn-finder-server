@@ -7,13 +7,13 @@ const router = express.Router();
 
 router.get(
   '/get-statistics',
-  auth(USER_ROLES.ADMIN),
+  auth(USER_ROLES.ADMIN, USER_ROLES.MODERATOR),
   DashboardController.getStatistics
 );
 
 router.get(
   '/get-earning-chart-data',
-  auth(USER_ROLES.ADMIN),
+  auth(USER_ROLES.ADMIN, USER_ROLES.MODERATOR),
   DashboardController.getEarningChartData
 );
 
