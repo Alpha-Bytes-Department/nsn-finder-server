@@ -70,7 +70,7 @@ const getEarningChartData = async () => {
     },
     {
       $addFields: {
-        allMonths: months, // your predefined months array
+        allMonths: months,
       },
     },
     {

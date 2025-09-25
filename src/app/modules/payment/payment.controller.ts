@@ -32,7 +32,19 @@ const unsubscribeUser = catchAsync(async (req, res) => {
   });
 });
 
+const getTotalPayment = catchAsync(async (req, res) => {
+  const result = await PaymentService.getTotalPayment();
+
+  sendResponse(res, {
+    statusCode: StatusCodes.CREATED,
+    success: true,
+    message: 'Payment retrived successfully',
+    data: result,
+  });
+});
+
 export const PaymentController = {
   createPayment,
   unsubscribeUser,
+  getTotalPayment,
 };

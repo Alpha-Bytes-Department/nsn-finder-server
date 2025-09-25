@@ -13,4 +13,6 @@ router.post(
 
 router.post('/unsubscribe-user', PaymentController.unsubscribeUser);
 
+router.get('/get-total-payment', PaymentController.getTotalPayment);
+
 export const PaymentRoutes = router;

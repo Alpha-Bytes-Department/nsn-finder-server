@@ -40,7 +40,20 @@ const unsubscribeUser = async () => {
   }
 };
 
+const getTotalPayment = async () => {
+  const [totalPayment] = await Promise.all([
+    Payment.aggregate([
+      { $match: { status: 'success' } },
+      { $group: { _id: null, total: { $sum: '$price' } } },
+      { $project: { _id: 0, total: 1 } },
+    ]),
+  ]);
+
+  return totalPayment;
+};
+
 export const PaymentService = {
   createPayment,
   unsubscribeUser,
+  getTotalPayment,
 };
